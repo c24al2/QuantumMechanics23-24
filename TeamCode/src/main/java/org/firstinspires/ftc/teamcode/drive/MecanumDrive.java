@@ -12,10 +12,10 @@ public class MecanumDrive {
     }
 
     public void drive(double x, double y, double yaw, double scalar) {
-        double fl = x + y + yaw;
-        double fr = -x + y - yaw;
-        double bl = -x + y + yaw;
-        double br = x + y - yaw;
+        double fl = y + x + yaw;
+        double fr = y - x - yaw;
+        double bl = y - x + yaw;
+        double br = y + x - yaw;
 
         // Find the maximum absolute power that needs to be applied to any motor
         double max = Math.max(Math.abs(fl), Math.max(Math.abs(fr), Math.max(Math.abs(bl), Math.abs(br))));
@@ -28,10 +28,10 @@ public class MecanumDrive {
             br /= max;
         }
         if (scalar != 1.0){
-            fl /= scalar;
-            fr /= scalar;
-            bl /= scalar;
-            br /= scalar;
+            fl *= scalar;
+            fr *= scalar;
+            bl *= scalar;
+            br *= scalar;
         }
 
         // Set the power for the motors

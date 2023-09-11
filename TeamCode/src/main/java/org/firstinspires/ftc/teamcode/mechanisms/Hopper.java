@@ -3,8 +3,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Hopper{
     private Servo hopperServo;
-    private static final double PICKUP_POSITION = 0.2;
-    private static final double DROP_POSITION = 0.8;
+    private static final double PICKUP_POSITION = 0.4;
+    private static final double DROP_POSITION = 0.13;
 
     public Hopper(Servo hopperServo) {
         this.hopperServo = hopperServo;
