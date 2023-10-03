@@ -21,14 +21,6 @@ public class MecanumOpmode extends LinearOpMode {
     private DcMotor fr;
     private DcMotor bl;
     private DcMotor br;
-    private Servo mainClawServo;
-    private Servo servo1;
-    private Servo servo2;
-
-    private DcMotor liftMotor1;
-    private DcMotor liftMotor2;
-
-    private Servo hopperServo;
 
     @Override
     public void runOpMode() {
@@ -36,18 +28,8 @@ public class MecanumOpmode extends LinearOpMode {
         fr = hardwareMap.get(DcMotor.class, "fr");
         bl = hardwareMap.get(DcMotor.class, "bl");
         br = hardwareMap.get(DcMotor.class, "br");
-        mainClawServo = hardwareMap.get(Servo.class, "m_claw_servo");
-        servo1 = hardwareMap.get(Servo.class, "flip_1");
-        servo2 = hardwareMap.get(Servo.class, "flip_2");
-        liftMotor1 = hardwareMap.get(DcMotor.class, "lift1");
-        liftMotor2 = hardwareMap.get(DcMotor.class, "lift2");
-        hopperServo = hardwareMap.get(Servo.class, "hopper_servo");
 
         MecanumDrive myDrive = new MecanumDrive(fl, fr, bl, br);
-        MainClaw claw = new MainClaw(mainClawServo);
-        Flipper flipper = new Flipper(servo1, servo2);
-        Lift lift = new Lift(liftMotor1, liftMotor2);
-        Hopper hopper = new Hopper(hopperServo);
         telemetry.addData("Status: ", "Waiting for Start");
         telemetry.update();
         waitForStart();
@@ -78,34 +60,6 @@ public class MecanumOpmode extends LinearOpMode {
             }
 
             myDrive.drive(x, y, yaw/DRIVER_ROTATION_SCALAR, scalar);
-
-            //gunner controls
-            if (gamepad2.x) {
-                claw.open();
-            }
-            else if (gamepad2.dpad_up) {
-                claw.handoff();
-            }
-            else if (gamepad2.y) {
-                claw.close();
-            }
-
-            if (gamepad2.a) {
-                flipper.moveToPickup();
-            } else if (gamepad2.b) {
-                flipper.moveToDrop();
-            } else if (gamepad2.dpad_down) {
-                flipper.moveToVertical();
-            }
-
-            if (gamepad2.dpad_left) {
-                hopper.setPickupPosition();
-            }
-            else if (gamepad2.dpad_right) {
-                hopper.setDropPosition();
-            }
-
-            lift.update(gamepad2);
 
             telemetry.addData("Status: ", "Running");
             telemetry.update();
