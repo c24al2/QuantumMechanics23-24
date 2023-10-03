@@ -12,8 +12,8 @@ import org.firstinspires.ftc.teamcode.mechanisms.Hopper;
 
 @TeleOp(name = "MecanumDriveTeleOp", group = "TeleOp")
 public class MecanumOpmode extends LinearOpMode {
-    public static double DRIVER_SPEED_SCALAR = 0.7;
-    public static double DRIVER_SPRINT_MODE_SCALAR = 0.85;
+    public static double DRIVER_SPEED_SCALAR = 0.85;
+    public static double DRIVER_SPRINT_MODE_SCALAR = 0.95;
     public static double DRIVER_ROTATION_SCALAR = 0.5;
     public static double DRIVER_SLOW_MODE_SCALAR = 0.50;
     public static double SENSITIVITY_THRESHOLD = 0.20;
@@ -70,7 +70,7 @@ public class MecanumOpmode extends LinearOpMode {
                 scalar = DRIVER_SPRINT_MODE_SCALAR;
             }
 
-            myDrive.drive(x, y, yaw/DRIVER_ROTATION_SCALAR, scalar);
+            myDrive.drive(x, y, yaw * DRIVER_ROTATION_SCALAR, scalar);
 
             telemetry.addData("Status: ", "Running");
             telemetry.update();

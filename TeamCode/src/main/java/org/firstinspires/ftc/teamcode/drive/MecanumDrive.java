@@ -28,10 +28,10 @@ public class MecanumDrive {
             br /= max;
         }
         if (scalar != 1.0){
-            fl /= scalar;
-            fr /= scalar;
-            bl /= scalar;
-            br /= scalar;
+            fl = fl * scalar;
+            fr = fr * scalar;
+            bl = bl * scalar;
+            br = br * scalar;
         }
 
         // Set the power for the motors
