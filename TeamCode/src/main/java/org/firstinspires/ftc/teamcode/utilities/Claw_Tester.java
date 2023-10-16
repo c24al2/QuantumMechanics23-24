@@ -1,45 +1,41 @@
 package org.firstinspires.ftc.teamcode.utilities;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Claw_Tester", group = "TeleOp")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Claw Position Finder", group = "TeleOp")
 public class Claw_Tester extends LinearOpMode {
+    private Servo leftServo;
+    private Servo rightServo;
 
-    private Servo servoLeft;
-    private Servo servoRight;
-
+    @Override
     public void runOpMode() {
-        servoLeft = hardwareMap.get(Servo.class, "left_servo");
-        servoRight = hardwareMap.get(Servo.class, "right_servo");
+        leftServo = hardwareMap.get(Servo.class, "left_servo");
+        rightServo = hardwareMap.get(Servo.class, "right_servo");
+        double position = 0.6;
+        double increment = 0.05;
 
         waitForStart();
-        ServoSync servoSync = new ServoSync(servoLeft, servoRight);
 
         while (opModeIsActive()) {
+            // sweep
+            leftServo.setPosition(position);
+            rightServo.setPosition(position);
 
-            //double desiredPosition = gamepad2.left_stick_y;
-            double desiredPosition = 0.2;
-            servoSync.syncServos(desiredPosition);
-            telemetry.addData("Status: ", "Synced!");
+            telemetry.addData("Position", position);
             telemetry.update();
+            sleep(3000);
 
+            position += increment;
+
+            if (position > 1.0) {
+                break;
+            }
         }
-    }
+        rightServo.setPosition(0.5);
+        leftServo.setPosition(0.5);
 
-    class ServoSync {
-
-        private Servo servo1;
-        private Servo servo2;
-
-        public ServoSync(Servo servo1, Servo servo2) {
-            this.servo1 = servo1;
-            this.servo2 = servo2;
-        }
-
-        public void syncServos(double position) {
-            servo1.setPosition(position);
-            servo2.setPosition(position);
-        }
+        telemetry.addData("Status", "Calibration Complete");
+        telemetry.update();
+        sleep(2000);
     }
 }
