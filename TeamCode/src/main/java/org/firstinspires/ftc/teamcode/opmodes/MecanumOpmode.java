@@ -64,7 +64,7 @@ public class MecanumOpmode extends LinearOpMode {
         while (opModeIsActive()) {
             double x = gamepad1.left_stick_x;
             double y = -gamepad1.left_stick_y;
-            double yaw = gamepad1.left_trigger;
+            double yaw = gamepad1.right_stick_x;
             double negative_yaw = gamepad1.right_trigger;
 
             if (Math.abs(yaw) < SENSITIVITY_THRESHOLD) {
