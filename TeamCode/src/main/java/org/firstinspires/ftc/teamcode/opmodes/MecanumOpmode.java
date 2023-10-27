@@ -5,10 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.mechanisms.MainClaw;
+import org.firstinspires.ftc.teamcode.mechanisms.Extend;
 import org.firstinspires.ftc.teamcode.mechanisms.Flipper;
-import org.firstinspires.ftc.teamcode.mechanisms.Lift;
 import org.firstinspires.ftc.teamcode.mechanisms.Hopper;
+import org.firstinspires.ftc.teamcode.mechanisms.Lift;
+import org.firstinspires.ftc.teamcode.mechanisms.MainClaw;
+import org.firstinspires.ftc.teamcode.mechanisms.Pincher;
+import org.firstinspires.ftc.teamcode.mechanisms.PincherWrist;
+import org.firstinspires.ftc.teamcode.mechanisms.Wrist;
 
 @TeleOp(name = "MecanumDriveTeleOp", group = "TeleOp")
 public class MecanumOpmode extends LinearOpMode {
@@ -17,18 +21,19 @@ public class MecanumOpmode extends LinearOpMode {
     public static double DRIVER_ROTATION_SCALAR = 0.5;
     public static double DRIVER_SLOW_MODE_SCALAR = 0.50;
     public static double SENSITIVITY_THRESHOLD = 0.20;
-    public static double LEFT_OPEN_POSITION = 0.7;
-    public static double LEFT_CLOSE_POSITION = 0.62;
-    public static double RIGHT_OPEN_POSITION = 0.75;
-    public static double RIGHT_CLOSE_POSITION = 0.62;
 
     private DcMotor fl;
     private DcMotor fr;
     private DcMotor bl;
     private DcMotor br;
     private DcMotor extend;
-    private Servo servoLeft;
-    private Servo servoRight;
+    private DcMotor lift;
+    private Servo top_servo;
+    private Servo bottom_servo;
+    private Servo pincher;
+    private Servo hopper;
+    private Servo pincher_wrist;
+    private Servo zOffset;
 
     @Override
     public void runOpMode() {
@@ -37,6 +42,7 @@ public class MecanumOpmode extends LinearOpMode {
         bl = hardwareMap.get(DcMotor.class, "bl");
         br = hardwareMap.get(DcMotor.class, "br");
         extend = hardwareMap.get(DcMotor.class, "extend");
+        lift = hardwareMap.get(DcMotor.class, "lift");
 
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -50,13 +56,22 @@ public class MecanumOpmode extends LinearOpMode {
         br.setDirection(DcMotorSimple.Direction.FORWARD);
         extend.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        servoLeft = hardwareMap.get(Servo.class, "left_servo");
-        servoRight = hardwareMap.get(Servo.class, "right_servo");
-
-        servoLeft.setPosition(0.8);
-        servoRight.setPosition(0.8);
+        top_servo = hardwareMap.get(Servo.class, "top_servo");
+        bottom_servo = hardwareMap.get(Servo.class, "bottom_servo");
+        pincher = hardwareMap.get(Servo.class, "pincher");
+        hopper = hardwareMap.get(Servo.class, "hopper");
+        pincher_wrist = hardwareMap.get(Servo.class, "pincher_wrist");
+        zOffset = hardwareMap.get(Servo.class, "zOffset");
 
         MecanumDrive myDrive = new MecanumDrive(fl, fr, bl, br);
+        Extend myExtend = new Extend(extend);
+        Hopper myHopper = new Hopper(hopper);
+        Lift myLift = new Lift(lift);
+        MainClaw myMainClaw = new MainClaw(top_servo, bottom_servo);
+        Pincher myPincher = new Pincher(pincher);
+        PincherWrist myPincherWrist = new PincherWrist(pincher_wrist);
+        Wrist myWrist = new Wrist(zOffset);
+
         telemetry.addData("Status: ", "Waiting for Start");
         telemetry.update();
         waitForStart();
@@ -65,7 +80,6 @@ public class MecanumOpmode extends LinearOpMode {
             double x = gamepad1.left_stick_x;
             double y = -gamepad1.left_stick_y;
             double yaw = gamepad1.right_stick_x;
-            double negative_yaw = gamepad1.right_trigger;
 
             if (Math.abs(yaw) < SENSITIVITY_THRESHOLD) {
                 yaw = 0;
@@ -105,16 +119,52 @@ public class MecanumOpmode extends LinearOpMode {
                 telemetry.update();
             }
 
+            //gunner controls begin here
+            //claw controls
             if (gamepad2.a){
-                //open the claw
-                servoLeft.setPosition(LEFT_OPEN_POSITION);
-                servoRight.setPosition(RIGHT_OPEN_POSITION);
+                myMainClaw.open_both();
             }
-            else if (gamepad2.b) {
-                //close the claw
-                servoLeft.setPosition(LEFT_CLOSE_POSITION);
-                servoRight.setPosition(RIGHT_CLOSE_POSITION);
+            else if (gamepad2.b){
+                myMainClaw.pickup();
             }
+            else if (gamepad2.x){
+                myMainClaw.droptop();
+            }
+            else if (gamepad2.y){
+                myMainClaw.dropbottom();
+            }
+            //pincher
+            if (gamepad2.left_trigger < SENSITIVITY_THRESHOLD){
+                myPincher.Pickup_Pincher();
+            }
+            else if (gamepad2.right_trigger < SENSITIVITY_THRESHOLD){
+                myPincher.Deposit_Pincher();
+            }
+            //wrist offsets
+            if (gamepad2.dpad_up){
+                myWrist.full_flip_level();
+            }
+            else if (gamepad2.dpad_down){
+                myWrist.flat_position();
+            }
+            else if (gamepad2.dpad_left){
+                myWrist.three_level();
+            }
+            else if (gamepad2.dpad_right){
+                myWrist.five_level();
+            }
+            //pincher wrist offsets
+            if (gamepad2.left_bumper){
+                myPincherWrist.Pickup();
+            }
+            else if (gamepad2.right_bumper){
+                myPincherWrist.Deposit();
+            }
+
+            myLift.update(gamepad2);
+            myExtend.update(gamepad2);
+
+
 
 
         }

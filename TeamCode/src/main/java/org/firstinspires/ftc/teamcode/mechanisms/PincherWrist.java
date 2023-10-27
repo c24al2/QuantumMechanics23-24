@@ -9,8 +9,8 @@ public class PincherWrist {
     public static final double DEPOSIT = 0.5;
     public static final double INTERMEDIATE = 1.0;
 
-    public PincherWrist(Servo zOffset) {
-        this.pincherWrist = zOffset;
+    public PincherWrist(Servo pincherWrist) {
+        this.pincherWrist = pincherWrist;
     }
 
     public void Pickup() {
