@@ -8,8 +8,8 @@ public class Pincher {
     public static final double PINCHER_PICKUP = 0.0;
     public static final double PINCHER_DEPOSIT = 0.5;
 
-    public Pincher(Servo zOffset) {
-        this.pincher = zOffset;
+    public Pincher(Servo pincher) {
+        this.pincher = pincher;
     }
 
     public void Pickup_Pincher() {
