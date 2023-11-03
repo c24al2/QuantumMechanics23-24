@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.utilities;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Claw Position Finder", group = "TeleOp")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Wrist Position Finder", group = "TeleOp")
 public class WristFinder extends LinearOpMode {
     private Servo wristleft;
     private Servo wristright;
