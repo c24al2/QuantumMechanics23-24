@@ -11,10 +11,10 @@ public class MainClaw {
     private double bottom_open;
     private double bottom_closed;
 
-    public static final double TOP_OPEN = 0.5;
-    public static final double TOP_CLOSED = 0.0;
-    public static final double BOTTOM_OPEN = 1.0;
-    public static final double BOTTOM_CLOSED = 1.0;
+    public static final double TOP_OPEN = 0.53;
+    public static final double TOP_CLOSED = 0.38;
+    public static final double BOTTOM_OPEN = 0.6;
+    public static final double BOTTOM_CLOSED = 0.5;
 
     public MainClaw(Servo top_servo, Servo bottom_servo) {
         this.clawServo1 = top_servo;

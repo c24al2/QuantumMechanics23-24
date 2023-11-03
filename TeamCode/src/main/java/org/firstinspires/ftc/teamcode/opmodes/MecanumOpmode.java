@@ -26,14 +26,12 @@ public class MecanumOpmode extends LinearOpMode {
     private DcMotor fr;
     private DcMotor bl;
     private DcMotor br;
-    private DcMotor extend;
-    private DcMotor lift;
-    private Servo top_servo;
-    private Servo bottom_servo;
-    private Servo pincher;
-    private Servo hopper;
-    private Servo pincher_wrist;
-    private Servo zOffset;
+//    private DcMotor extend;
+//    private DcMotor lift;
+//    private Servo top_servo;
+//    private Servo bottom_servo;
+//    private Servo pincher;
+
 
     @Override
     public void runOpMode() {
@@ -41,36 +39,39 @@ public class MecanumOpmode extends LinearOpMode {
         fr = hardwareMap.get(DcMotor.class, "fr");
         bl = hardwareMap.get(DcMotor.class, "bl");
         br = hardwareMap.get(DcMotor.class, "br");
-        extend = hardwareMap.get(DcMotor.class, "extend");
-        lift = hardwareMap.get(DcMotor.class, "lift");
+//        extend = hardwareMap.get(DcMotor.class, "extend");
+//        lift = hardwareMap.get(DcMotor.class, "lift");
+//        pincher = hardwareMap.get(Servo.class, "pincher");
 
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        extend.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         fl.setDirection(DcMotorSimple.Direction.REVERSE);
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
-        extend.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        top_servo = hardwareMap.get(Servo.class, "top_servo");
-        bottom_servo = hardwareMap.get(Servo.class, "bottom_servo");
-        pincher = hardwareMap.get(Servo.class, "pincher");
-        hopper = hardwareMap.get(Servo.class, "hopper");
-        pincher_wrist = hardwareMap.get(Servo.class, "pincher_wrist");
-        zOffset = hardwareMap.get(Servo.class, "zOffset");
+//        extend.setDirection(DcMotorSimple.Direction.FORWARD);
+//
+//        top_servo = hardwareMap.get(Servo.class, "left_servo");
+//        bottom_servo = hardwareMap.get(Servo.class, "right_servo");
+//        pincher = hardwareMap.get(Servo.class, "pincher");
+//        hopper = hardwareMap.get(Servo.class, "hopper");
+//        pincher_wrist = hardwareMap.get(Servo.class, "pincher_wrist");
+//        zOffset = hardwareMap.get(Servo.class, "zOffset");
 
         MecanumDrive myDrive = new MecanumDrive(fl, fr, bl, br);
-        Extend myExtend = new Extend(extend);
-        Hopper myHopper = new Hopper(hopper);
-        Lift myLift = new Lift(lift);
-        MainClaw myMainClaw = new MainClaw(top_servo, bottom_servo);
-        Pincher myPincher = new Pincher(pincher);
-        PincherWrist myPincherWrist = new PincherWrist(pincher_wrist);
-        Wrist myWrist = new Wrist(zOffset);
+//        Extend myExtend = new Extend(extend);
+////        Hopper myHopper = new Hopper(hopper);
+//        Extend myExtend = new Extend(extend);
+////        Hopper myHopper = new Hopper(hopper);
+//        Lift myLift = new Lift(lift);
+//        MainClaw myMainClaw = new MainClaw(top_servo, bottom_servo);
+//        Pincher myPincher = new Pincher(pincher);
+//        PincherWrist myPincherWrist = new PincherWrist(pincher_wrist);
+//        Wrist myWrist = new Wrist(zOffset);
 
         telemetry.addData("Status: ", "Waiting for Start");
         telemetry.update();
@@ -109,61 +110,68 @@ public class MecanumOpmode extends LinearOpMode {
             telemetry.update();
 
             if (Math.abs(gamepad2.left_stick_y) > SENSITIVITY_THRESHOLD){
-                extend.setPower(-gamepad2.left_stick_y * .95);
+//                extend.setPower(-gamepad2.left_stick_y * .95);
                 telemetry.addData("Status: ", "Extending");
                 telemetry.update();
             }
             else {
-                extend.setPower(0);
+//                extend.setPower(0);
+                telemetry.addData("Status: ", "NOT extending");
+                telemetry.update();
+            }
+            if (Math.abs(gamepad2.right_stick_y) > SENSITIVITY_THRESHOLD){
+//                lift.setPower(-gamepad2.right_stick_y * .95);
+                telemetry.addData("Status: ", "Extending");
+                telemetry.update();
+            }
+            else {
+//                lift.setPower(0);
                 telemetry.addData("Status: ", "NOT extending");
                 telemetry.update();
             }
 
             //gunner controls begin here
             //claw controls
-            if (gamepad2.a){
-                myMainClaw.open_both();
-            }
-            else if (gamepad2.b){
-                myMainClaw.pickup();
-            }
-            else if (gamepad2.x){
-                myMainClaw.droptop();
-            }
-            else if (gamepad2.y){
-                myMainClaw.dropbottom();
-            }
-            //pincher
-            if (gamepad2.left_trigger < SENSITIVITY_THRESHOLD){
-                myPincher.Pickup_Pincher();
-            }
-            else if (gamepad2.right_trigger < SENSITIVITY_THRESHOLD){
-                myPincher.Deposit_Pincher();
-            }
-            //wrist offsets
-            if (gamepad2.dpad_up){
-                myWrist.full_flip_level();
-            }
-            else if (gamepad2.dpad_down){
-                myWrist.flat_position();
-            }
-            else if (gamepad2.dpad_left){
-                myWrist.three_level();
-            }
-            else if (gamepad2.dpad_right){
-                myWrist.five_level();
-            }
-            //pincher wrist offsets
-            if (gamepad2.left_bumper){
-                myPincherWrist.Pickup();
-            }
-            else if (gamepad2.right_bumper){
-                myPincherWrist.Deposit();
-            }
-
-            myLift.update(gamepad2);
-            myExtend.update(gamepad2);
-
+//            if (gamepad2.a){
+//                myMainClaw.open_both();
+//            }
+//            if (gamepad2.b) {
+//                pincher.setPosition(1);
+//            }
+//            else if (gamepad2.y){
+//                myMainClaw.dropbottom();
+//            }
+//            //pincher
+//            if (gamepad2.left_trigger < SENSITIVITY_THRESHOLD){
+//                myPincher.Pickup_Pincher();
+//            }
+//            else if (gamepad2.right_trigger < SENSITIVITY_THRESHOLD){
+//                myPincher.Deposit_Pincher();
+//            }
+//            //wrist offsets
+//            if (gamepad2.dpad_up){
+//                myWrist.full_flip_level();
+//            }
+//            else if (gamepad2.dpad_down){
+//                myWrist.flat_position();
+//            }
+//            else if (gamepad2.dpad_left){
+//                myWrist.three_level();
+//            }
+//            else if (gamepad2.dpad_right){
+//                myWrist.five_level();
+//            }
+//            //pincher wrist offsets
+//            if (gamepad2.left_bumper){
+//                myPincherWrist.Pickup();
+//            }
+//            else if (gamepad2.right_bumper){
+//                myPincherWrist.Deposit();
+//            }
+//
+//            myLift.update(gamepad2);
+//            myExtend.update(gamepad2);
+//
 
 
 

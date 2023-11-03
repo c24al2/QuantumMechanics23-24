@@ -3,14 +3,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Claw Position Finder", group = "TeleOp")
-public class Claw_Tester extends LinearOpMode {
-    private Servo leftServo;
-    private Servo rightServo;
+public class FrontClawPositions extends LinearOpMode {
+    private Servo clawleft;
+    private Servo clawright;
 
     @Override
     public void runOpMode() {
-        leftServo = hardwareMap.get(Servo.class, "left_servo");
-        rightServo = hardwareMap.get(Servo.class, "right_servo");
+        clawleft = hardwareMap.get(Servo.class, "clawleft");
+        clawright = hardwareMap.get(Servo.class, "clawright");
         double position = 0.3;
         double increment = 0.05;
 
@@ -18,8 +18,8 @@ public class Claw_Tester extends LinearOpMode {
 
         while (opModeIsActive()) {
             // sweep
-            leftServo.setPosition(position);
-            rightServo.setPosition(position);
+            clawleft.setPosition(position);
+            clawright.setPosition(position);
 
             telemetry.addData("Position", position);
             telemetry.update();
@@ -31,8 +31,8 @@ public class Claw_Tester extends LinearOpMode {
                 break;
             }
         }
-        rightServo.setPosition(0.5);
-        leftServo.setPosition(0.5);
+        clawleft.setPosition(0.5);
+        clawright.setPosition(0.5);
 
         telemetry.addData("Status", "Calibration Complete");
         telemetry.update();
