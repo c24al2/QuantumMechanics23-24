@@ -22,6 +22,8 @@ public class V3MecanumOpmode extends LinearOpMode {
     private Servo clawleft;
     private Servo clawright;
 
+    private Servo launcher;
+
 
 
     @Override
@@ -31,6 +33,8 @@ public class V3MecanumOpmode extends LinearOpMode {
         wristright = hardwareMap.get(Servo.class, "wristright");
         clawleft = hardwareMap.get(Servo.class, "clawleft");
         clawright = hardwareMap.get(Servo.class, "clawright");
+        launcher = hardwareMap.get(Servo.class, "launcher");
+
         telemetry.addData("Status: ", "Waiting for Start");
         telemetry.update();
         waitForStart();
@@ -66,6 +70,12 @@ public class V3MecanumOpmode extends LinearOpMode {
             //close claw top
             else if (gamepad2.b){
                 wristright.setPosition(0.4);
+            }
+            if (gamepad2.left_trigger >= 0.5){
+                launcher.setPosition(0.4);
+            }
+            else if (gamepad2.right_trigger >= 0.5){
+                launcher.setPosition(0.6);
             }
         }
 

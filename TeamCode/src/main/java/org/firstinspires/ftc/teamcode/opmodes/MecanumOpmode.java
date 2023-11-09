@@ -30,7 +30,7 @@ public class MecanumOpmode extends LinearOpMode {
 //    private DcMotor lift;
 //    private Servo top_servo;
 //    private Servo bottom_servo;
-//    private Servo pincher;
+    private Servo launcher;
 
 
     @Override
@@ -57,7 +57,7 @@ public class MecanumOpmode extends LinearOpMode {
 //
 //        top_servo = hardwareMap.get(Servo.class, "left_servo");
 //        bottom_servo = hardwareMap.get(Servo.class, "right_servo");
-//        pincher = hardwareMap.get(Servo.class, "pincher");
+        launcher = hardwareMap.get(Servo.class, "launcher");
 //        hopper = hardwareMap.get(Servo.class, "hopper");
 //        pincher_wrist = hardwareMap.get(Servo.class, "pincher_wrist");
 //        zOffset = hardwareMap.get(Servo.class, "zOffset");
