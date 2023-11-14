@@ -12,7 +12,7 @@ public class FrontWristTester extends LinearOpMode {
         wristleft = hardwareMap.get(Servo.class, "wristleft");
         wristright = hardwareMap.get(Servo.class, "wristright");
         wristleft.setPosition(0.2);
-        wristright.setPosition(0.2);
+        wristright.setPosition(1-0.2);
         waitForStart();
 
         while (opModeIsActive()) {

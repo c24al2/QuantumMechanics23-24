@@ -2,24 +2,22 @@ package org.firstinspires.ftc.teamcode.utilities;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Wrist Position Finder", group = "TeleOp")
-public class WristFinder extends LinearOpMode {
-    private Servo wristleft;
-    private Servo wristright;
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Hopper Position Finder", group = "TeleOp")
+public class HopperDoorPositions extends LinearOpMode {
+    private Servo hopper;
 
     @Override
     public void runOpMode() {
-        wristleft = hardwareMap.get(Servo.class, "wristleft");
-        wristright = hardwareMap.get(Servo.class, "wristright");
-        double position = 0;
-        double increment = 0.05;
+        hopper = hardwareMap.get(Servo.class, "hopper");
+        double position = 0.05;
+        double increment = 0.03;
+        hopper.setPosition(0.05);
 
         waitForStart();
 
         while (opModeIsActive()) {
             // sweep
-            wristleft.setPosition(position);
-            wristright.setPosition(1-position);
+            hopper.setPosition(position);
 
             telemetry.addData("Position", position);
             telemetry.update();
@@ -31,8 +29,7 @@ public class WristFinder extends LinearOpMode {
                 break;
             }
         }
-        wristleft.setPosition(0.5);
-        wristright.setPosition(0.5);
+        hopper.setPosition(0.5);
 
         telemetry.addData("Status", "Calibration Complete");
         telemetry.update();

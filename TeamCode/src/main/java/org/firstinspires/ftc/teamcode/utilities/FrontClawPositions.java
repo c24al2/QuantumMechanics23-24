@@ -9,8 +9,9 @@ public class FrontClawPositions extends LinearOpMode {
     @Override
     public void runOpMode() {
         claw = hardwareMap.get(Servo.class, "claw");
-        double position = 0.4;
-        double increment = 0.05;
+        double position = 0.2;
+        double increment = 0.03;
+        claw.setPosition(0.2);
 
         waitForStart();
 

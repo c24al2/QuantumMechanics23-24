@@ -9,8 +9,8 @@ public class Claw_Tester extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        leftServo = hardwareMap.get(Servo.class, "left_servo");
-        rightServo = hardwareMap.get(Servo.class, "right_servo");
+        leftServo = hardwareMap.get(Servo.class, "wristright");
+        rightServo = hardwareMap.get(Servo.class, "wristleft");
         double position = 0.3;
         double increment = 0.05;
 
