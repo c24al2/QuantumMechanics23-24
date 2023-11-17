@@ -21,6 +21,7 @@ public class V3MecanumOpmode extends LinearOpMode {
     public static double DRIVER_ROTATION_SCALAR = 0.5;
     public static double DRIVER_SLOW_MODE_SCALAR = 0.50;
     public static double SENSITIVITY_THRESHOLD = 0.20;
+    public static double LIFT_SCALAR = 0.85;
 
     private Servo wristleft;
     private Servo wristright;
@@ -33,6 +34,7 @@ public class V3MecanumOpmode extends LinearOpMode {
     private DcMotor fr;
     private DcMotor bl;
     private DcMotor br;
+    private DcMotor lift;
 
     private double intakeTimer;
 
@@ -42,6 +44,7 @@ public class V3MecanumOpmode extends LinearOpMode {
         fr = hardwareMap.get(DcMotor.class, "fr");
         bl = hardwareMap.get(DcMotor.class, "bl");
         br = hardwareMap.get(DcMotor.class, "br");
+        lift = hardwareMap.get(DcMotor.class, "lift");
 
         wristleft = hardwareMap.get(Servo.class, "wristleft");
         wristright = hardwareMap.get(Servo.class, "wristright");
@@ -58,6 +61,7 @@ public class V3MecanumOpmode extends LinearOpMode {
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         fr.setDirection(DcMotorSimple.Direction.FORWARD);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
+        lift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         MecanumDrive myDrive = new MecanumDrive(fl, fr, bl, br);
         telemetry.addData("Status: ", "Waiting for Start");
@@ -71,7 +75,7 @@ public class V3MecanumOpmode extends LinearOpMode {
             telemetry.addData("Status: ", "Running!");
             double x = gamepad1.left_stick_x;
             double y = -gamepad1.left_stick_y;
-            yaw = gamepad1.left_trigger - gamepad2.right_trigger;
+            yaw = gamepad1.left_trigger - gamepad1.right_trigger;
 
             if (Math.abs(yaw) < SENSITIVITY_THRESHOLD) {
                 yaw = 0;
@@ -113,14 +117,6 @@ public class V3MecanumOpmode extends LinearOpMode {
                 wristleft.setPosition(0.68);
                 wristright.setPosition(.32);
             }
-            //close hopper
-            if (gamepad2.left_bumper){
-                hopper.setPosition(0.38);
-            }
-            //open hopper
-            else if (gamepad2.right_bumper){
-                hopper.setPosition(0.05);
-            }
             //pickup + drop into hopper
             if (gamepad2.dpad_up){
                 //close claw
@@ -139,14 +135,37 @@ public class V3MecanumOpmode extends LinearOpMode {
                 //reset
                 if (elapsedIntakeTimer >= 1100) {
                     intakeTimer = currentTime;
+
                 }
-
-
             }
+            //test together funcs
+            if (gamepad2.dpad_down){
+                claw.setPosition(0.49);
+                wristleft.setPosition(0.68);
+                wristright.setPosition(.32);
+                claw.setPosition(0.32);
+            }
+
             if (gamepad2.left_trigger > 0.5){
                 launcher.setPosition(0.4);
             }
 
+            //close hopper
+            if (gamepad2.left_bumper){
+                hopper.setPosition(0.38);
+            }
+            //open hopper
+            else if (gamepad2.right_bumper){
+                hopper.setPosition(0.05);
+            }
+
+            if (Math.abs(gamepad2.right_stick_y) > SENSITIVITY_THRESHOLD){
+                double power = -gamepad2.right_stick_y;
+                lift.setPower(power * LIFT_SCALAR);
+            }
+            else{
+                lift.setPower(0);
+            }
         }
 
     }
