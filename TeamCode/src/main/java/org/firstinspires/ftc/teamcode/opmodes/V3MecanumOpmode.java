@@ -138,17 +138,6 @@ public class V3MecanumOpmode extends LinearOpMode {
 
                 }
             }
-            //test together funcs
-            if (gamepad2.dpad_down){
-                claw.setPosition(0.49);
-                wristleft.setPosition(0.68);
-                wristright.setPosition(.32);
-                claw.setPosition(0.32);
-            }
-
-            if (gamepad2.left_trigger > 0.5){
-                launcher.setPosition(0.4);
-            }
 
             //close hopper
             if (gamepad2.left_bumper){
